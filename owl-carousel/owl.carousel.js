@@ -78,10 +78,15 @@ if (typeof Object.create !== "function") {
 
         setVars : function () {
             var base = this;
-            if (base.$elem.children().length === 0) {return false; }
+            var $filteredElems = base.$elem.children();
+            if (base.options.itemsSelector) {
+                $filteredElems = $filteredElems.filter(base.options.itemsSelector);
+            }
+
+            if ($filteredElems.length === 0) { return false; }
             base.baseClass();
             base.eventTypes();
-            base.$userItems = base.$elem.children();
+            base.$userItems = $filteredElems;
             base.itemsAmount = base.$userItems.length;
             base.wrapItems();
             base.$owlItems = base.$elem.find(".owl-item");
@@ -1460,6 +1465,7 @@ if (typeof Object.create !== "function") {
         itemsMobile : [479, 1],
         singleItem : false,
         itemsScaleUp : false,
+        itemsSelector : null,
 
         slideSpeed : 200,
         paginationSpeed : 800,
